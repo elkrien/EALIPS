@@ -1,2 +1,2 @@
 # EALIS
-Elkrien Arch Linux Post-Installation Script
+**E**lkrien **A**rch **L**inux **I**nstallation **S**cript
