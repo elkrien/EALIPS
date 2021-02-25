@@ -12,3 +12,7 @@
 
 - create packages.csv - list of applications installed by script
 - add git-setup and git-update scripts
+
+### 1.0.2 - 25 Feb 2021
+
+- modification on main script - added variables and functions: welcome, questions, preinstallmsg - some code cleanup 
