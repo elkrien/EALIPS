@@ -94,7 +94,7 @@ refreshkeys() { \
 
 # Installation of packages using pacman
 
-installpkg(){ pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
+installpkg(){sudo pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
 
 # Installation of AUR helper 
 
@@ -137,7 +137,7 @@ aurinstall() { \
 installationloopgnome() { \ 
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
 	total=$(wc -l < /tmp/progs.csv)
-	aurinstalled=$(pacman -Qqm)
+	aurinstalled=$(sudo pacman -Qqm)
 	while IFS=, read -r tag program comment; do
 		n=$((n+1))
 		echo "$comment" | grep -q "^\".*\"$" && comment="$(echo "$comment" | sed "s/\(^\"\|\"$\)//g")"
@@ -155,7 +155,7 @@ installationloopgnome() { \
 installationloopxfce() { \ 
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
 	total=$(wc -l < /tmp/progs.csv)
-	aurinstalled=$(pacman -Qqm)
+	aurinstalled=$(sudo pacman -Qqm)
 	while IFS=, read -r tag program comment; do
 		n=$((n+1))
 		echo "$comment" | grep -q "^\".*\"$" && comment="$(echo "$comment" | sed "s/\(^\"\|\"$\)//g")"
