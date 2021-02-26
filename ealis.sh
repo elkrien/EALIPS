@@ -104,8 +104,8 @@ manualinstall() {
 	--backtitle "Elkrien's Arch Linux Installation Script" \
 	--infobox "\\nInstalling \"$1\", an AUR helper..." 5 50
 	cd /tmp || exit 1
-	rm -rf /tmp/"$1"*
-	curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz &&
+	sudo rm -rf /tmp/"$1"*
+	sudo curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz &&
 	sudo -u "$name" tar -xvf "$1".tar.gz >/dev/null 2>&1 &&
 	cd "$1" &&
 	sudo -u "$name" makepkg --noconfirm -si >/dev/null 2>&1
@@ -173,7 +173,7 @@ installationloopxfce() { \
 
 # Allow user to run sudo without password - to not interrupt script when password is needed
 
-[ -f /etc/sudoers.pacnew ] && cp /etc/sudoers.pacnew /etc/sudoers # Just in case
+#[ -f /etc/sudoers.pacnew ] && cp /etc/sudoers.pacnew /etc/sudoers # Just in case
 sudo sed -i "/%wheel/d" /etc/sudoers
 sudo bash -c 'echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
 
