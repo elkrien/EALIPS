@@ -16,3 +16,7 @@
 ### 1.0.2 - 25 Feb 2021
 
 - modification on main script - added variables and functions: welcome, questions, preinstallmsg - some code cleanup 
+
+### 1.0.3 - 26 Feb 2021
+
+- modification on main script - main installation functions added 

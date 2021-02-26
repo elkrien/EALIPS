@@ -57,7 +57,7 @@ P,simplescreenrecorder,"APPS - A feature-rich screen recorder that supports X11 
 P,kitty,"SYSTEM - a modern, hackable, featureful, OpenGL-based terminal emulator"
 P,htop,"SYSTEM - interactive process viewer"
 P,neofetch,"SYSTEM - a CLI system information tool written in BASH that supports displaying images"
-P,gparted,"SYSTEM - a Partition Magic clone, frontend to GNU Parted"					
+P,gparted,"SYSTEM - a Partition Magic clone, frontend to GNU Parted"
 P,grub-customizer,"SYSTEM - a graphical grub2 settings manager"
 P,fish,"SYSTEM - smart and user friendly shell intended mostly for interactive use"
 P,libreoffice-fresh,"APPS - LibreOffice branch which contains new features and program enhancements"
