@@ -129,7 +129,7 @@ aurinstall() { \
 	--title " EALIS Installation " \
 	--infobox "\\nInstalling \`$1\` ($n of $total) from the AUR $1 $2" 6 70
 	echo "$aurinstalled" | grep -q "^$1$" && return 1
-	sudo -u "$name" $aurhelper -S --noconfirm "$1" >/dev/null 2>&1
+	sudo -u "$name" $aurhelper -S --noconfirm --needed "$1" >/dev/null 2>&1
 	}	
 
 # Installation function for GNOME 
