@@ -234,12 +234,9 @@ manualinstall $aurhelper || error "Failed to install AUR helper." # install AUR 
 # Install all packages for chosen desktop environment
 
 case "$DE" in
-   "GNOME") installationloopgnome() ;;
-   "XFCE") installationloopxfce() ;; 
+   "GNOME") installationloopgnome ;;
+   "XFCE") installationloopxfce ;; 
 esac
-
-
-
 
 
 # Overwrite sudoers back and allow the user to run
