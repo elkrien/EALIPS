@@ -33,7 +33,7 @@ error() { \
 welcome() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
-	--title " WELCOME! " \
+	--title " WELCOME $name ! " \
 	--msgbox "\\n\\nWelcome to Elkrien's Arch Linux Installation Script!\\n\\nThis script will automatically install a selected desktop environment and all programs needed to have a nice and ready Arch Linux :)\\n\\nJust answer few questions on next screens and we can start..." \
 	14 75
 
