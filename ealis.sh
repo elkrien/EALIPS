@@ -138,7 +138,7 @@ aurinstall() { \
 
 installationloopgnome() { \
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
-	total=$(wc -l < /tmp/progs.csv)
+	let total=$(grep -c "A," /tmp/progs.csv)+$(grep -c "AG," /tmp/progs.csv)+$(grep -c "P," /tmp/progs.csv)+$(grep -c "PG," /tmp/progs.csv)
 	aurinstalled=$(sudo pacman -Qqm)
 	while IFS=, read -r tag program comment; do
 		n=$((n+1))
@@ -156,7 +156,7 @@ installationloopgnome() { \
 
 installationloopxfce() { \
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
-	total=$(wc -l < /tmp/progs.csv)
+	let total=$(grep -c "A," /tmp/progs.csv)+$(grep -c "AX," /tmp/progs.csv)+$(grep -c "P," /tmp/progs.csv)+$(grep -c "PX," /tmp/progs.csv)
 	aurinstalled=$(sudo pacman -Qqm)
 	while IFS=, read -r tag program comment; do
 		n=$((n+1))
