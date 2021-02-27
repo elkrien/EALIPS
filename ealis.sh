@@ -170,6 +170,31 @@ installationloopxfce() { \
 		esac
 	done < /tmp/progs.csv ;}
 	
+# TLP installation
+
+tlpinstall() { \
+	dialog \
+	--backtitle "Elkrien's Arch Linux Installation Script" \
+	--title " EALIS Installation " \
+	--infobox "\\nInstalling and enabling TLP (battery management for laptops)" 6 70
+	installpkg "tlp"
+	sudo systemctl enable tlp.service
+	}	
+
+# Bluetooth installation
+
+bthinstall() { \
+	dialog \
+	--backtitle "Elkrien's Arch Linux Installation Script" \
+	--title " EALIS Installation " \
+	--infobox "\\nInstalling and enabling Bluetooth" 6 60
+	for x in pulseaudio-bluetooth bluez bluez-libs bluez-utils blueberry; do
+	installpkg "$x"
+	done
+	sudo systemctl enable bluetooth.service
+	sudo systemctl start bluetooth.service
+	sudo sed -i 's/'#AutoEnable=false'/'AutoEnable=true'/g' /etc/bluetooth/main.conf
+	}	
 
 ### THE ACTUAL SCRIPT ###
 
@@ -238,6 +263,18 @@ manualinstall $aurhelper || error "Failed to install AUR helper." # install AUR 
 case "$DE" in
    "GNOME") installationloopgnome ;;
    "XFCE") installationloopxfce ;; 
+esac
+
+# Install TLP and enable TLP service if selected
+
+case "$LAPTOP" in
+   "YES") tlpinstall ;; 
+esac
+
+# Install and enable Bluetooth
+
+case "$BTH" in
+   "YES") bthinstall ;; 
 esac
 
 

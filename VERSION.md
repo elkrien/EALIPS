@@ -20,3 +20,8 @@
 ### 1.0.3 - 26 Feb 2021
 
 - modification on main script - main installation functions added 
+
+### 1.0.4 - 27 Feb 2021
+
+- modification on main script - corrections after real tests
+- modification on main script - added Laptop and Bluetooth functions
