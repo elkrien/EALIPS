@@ -94,7 +94,7 @@ refreshkeys() { \
 
 # Installation of packages using pacman
 
-installpkg(){sudo pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
+installpkg(){ sudo pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
 
 # Installation of AUR helper 
 
