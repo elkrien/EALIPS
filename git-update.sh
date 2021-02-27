@@ -1,51 +1,55 @@
-#!/bin/bash
-#set -e
-#################################################################################
-#										#
-#										#
-# Opis		:	Skrypt do update'u git					#
-#		:								#
-# Author	:	Maciej Młocek (thx to Eric Dubois from Arcolinux)	#
-#										#
-#										#
-#################################################################################
+#!/bin/sh
+#
+# GIT update script
+# by MM <elkrien@gmail.com>
+# based & inspired on Eric Dubois (thanx)
+# License: GNU GPLv3
+#
+#https://www.atlassian.com/git/tutorials/setting-up-a-repository/git-config
 
 
 
-# sprawdzanie github czy wszystko aktualne (pull)
+# Github (pull)
 
 tput setaf 3
 echo
-echo "Sprawdzanie czy pliki różnią się od github"
+echo "Verification if everything is actual..."
 tput sgr0
 git pull
 
-# Poniższa komenda wskazuje, że wszystko z folderu należy zaktualizować
+# Mark all for update
 
 git add --all .
 
-# Dodawanie komentarza do commit
+# Add commit
 
 tput setaf 3
 echo
+echo
 echo "####################################"
-echo "Wprowadź komentarz commit:"
+echo
+echo "Add commit:"
 
 read input
 tput sgr0
 
-# Ustawianie commit z pobranym powyżej komentarzem oraz datą
+# Set commit with above comment and date
 
 git commit -m "$input"
 
-# Wysłanie plików na github (push)
+# Github (push)
 
 git push -u origin main
 
-# Komunikat końcowy
+# Final information
 
 tput setaf 3
+echo
+echo
 echo "################################################################"
-echo "################    Zaktualizowano git   #######################"
+echo
+echo "                      Git updated"
+echo
 echo "################################################################"
+echo
 tput sgr0
