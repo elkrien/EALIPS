@@ -71,7 +71,7 @@ questions() { \
 	--yesno "\\nDo You want to install Bluetooth service?" 7 55); then BTH=YES; else BTH=NO; fi 
 	}
 
-# Final Confirmation
+# Final Confirmation function
 
 preinstallmsg() { \
 	dialog \
@@ -83,7 +83,7 @@ preinstallmsg() { \
 	14 60 || { clear; exit 1; }
 	}	
 
-# Refreshing Arch Linux Keyring
+# Refreshing Arch Linux Keyring function
 
 refreshkeys() { \
 	dialog \
@@ -92,13 +92,13 @@ refreshkeys() { \
 	sudo pacman --noconfirm -S archlinux-keyring >/dev/null 2>&1
 	}
 
-# Installation of packages using pacman
+# Installation of packages using pacman function
 
 installpkg() { 
 	sudo pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 
 	}
 
-# Installation of AUR helper 
+# Installation of AUR helper function
 
 manualinstall() {
 	[ -f "/usr/bin/$1" ] || (
@@ -113,7 +113,7 @@ manualinstall() {
 	sudo makepkg --noconfirm -si >/dev/null 2>&1
 	cd /tmp || return 1) ;}
 
-# Installation of packages for ARCH Linux repositories
+# Installation of packages for ARCH Linux repositories function
 
 maininstall() { 
 	dialog \
@@ -123,7 +123,7 @@ maininstall() {
 	installpkg "$1"
 	}
 
-# Installation of packages from AUR repositories
+# Installation of packages from AUR repositories function
 	
 aurinstall() { \
 	dialog \
@@ -170,7 +170,7 @@ installationloopxfce() { \
 		esac
 	done < /tmp/progs.csv ;}
 	
-# TLP installation
+# TLP installation function
 
 tlpinstall() { \
 	dialog \
@@ -181,7 +181,7 @@ tlpinstall() { \
 	sudo systemctl enable tlp.service
 	}	
 
-# Bluetooth installation
+# Bluetooth installation function
 
 bthinstall() { \
 	dialog \
@@ -195,6 +195,30 @@ bthinstall() { \
 	sudo systemctl start bluetooth.service
 	sudo sed -i 's/'#AutoEnable=false'/'AutoEnable=true'/g' /etc/bluetooth/main.conf
 	}	
+
+# Enabling services function
+
+serviceinstall() {
+	dialog \
+	--backtitle "Elkrien's Arch Linux Installation Script" \
+	--title " EALIS Installation " \
+	--infobox "\\nEnabling services (desktop environment, printers, network etc.)" 6 70
+	# desktop environment:
+	case "$DE" in 						
+   		"GNOME") sudo systemctl enable gdm ;;
+   		"XFCE") sudo systemctl enable lightdm.service -f ;; 
+	esac
+	# printers:
+	sudo systemctl enable cups.service 	
+	# setting nsswitch.conf:
+	sudo sed -i 's/files mymachines myhostname/files mymachines/g' /etc/nsswitch.conf #first part
+	sudo sed -i 's/\[\!UNAVAIL=return\] dns/\[\!UNAVAIL=return\] mdns dns wins myhostname/g' /etc/nsswitch.conf #last part
+	# disable systemd-resolved (not working with avahi) and enable avahi:
+	sudo systemctl disable systemd-resolved.service 
+	sudo systemctl enable avahi-daemon.service
+	}
+
+
 
 ### THE ACTUAL SCRIPT ###
 
@@ -254,9 +278,11 @@ for x in curl base-devel git; do		# install dev tools
 	installpkg "$x"
 done
 
-sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf # use all cores for compilation
+#sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf # use all cores for compilation
 
-manualinstall $aurhelper || error "Failed to install AUR helper." # install AUR helper defined in variables
+# Install AUR helper defined in variables
+
+manualinstall $aurhelper || error "Failed to install AUR helper." 
 
 # Install all packages for chosen desktop environment
 
@@ -277,6 +303,9 @@ case "$BTH" in
    "YES") bthinstall ;; 
 esac
 
+# Enable services
+
+serviceinstall
 
 # Overwrite sudoers back and allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
