@@ -131,12 +131,12 @@ aurinstall() { \
 	--title " EALIS Installation " \
 	--infobox "\\nInstalling \`$1\` ($n of $total) from the AUR $2" 6 70
 	echo "$aurinstalled" | grep -q "^$1$" && return 1
-	sudo $aurhelper -S --noconfirm --needed "$1" >/dev/null 2>&1
+	$aurhelper -S --noconfirm --needed "$1" >/dev/null 2>&1
 	}	
 
 # Installation function for GNOME 
 
-installationloopgnome() { \ 
+installationloopgnome() { \
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
 	total=$(wc -l < /tmp/progs.csv)
 	aurinstalled=$(sudo pacman -Qqm)
@@ -154,7 +154,7 @@ installationloopgnome() { \
 
 # Installation function for XFCE 
 
-installationloopxfce() { \ 
+installationloopxfce() { \
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
 	total=$(wc -l < /tmp/progs.csv)
 	aurinstalled=$(sudo pacman -Qqm)
@@ -176,8 +176,8 @@ installationloopxfce() { \
 # Allow user to run sudo without password - to not interrupt script when password is needed
 
 #[ -f /etc/sudoers.pacnew ] && cp /etc/sudoers.pacnew /etc/sudoers # Just in case
-sudo sed -i "/%wheel/d" /etc/sudoers
-sudo bash -c 'echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
+#sudo sed -i "/%wheel/d" /etc/sudoers
+sudo bash -c 'echo "%wheel ALL=(ALL) NOPASSWD: ALL #EALIS" >> /etc/sudoers'
 
 # Clear terminal
 clear
@@ -244,6 +244,6 @@ esac
 # Overwrite sudoers back and allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
 
-sudo sed -i "/%wheel/d" /etc/sudoers
-sudo bash -c 'echo "%wheel ALL=(ALL) ALL #EALIS
+sudo sed -i "/#EALIS/d" /etc/sudoers
+sudo bash -c 'echo "%wheel ALL=(ALL) ALL
 %wheel ALL=(ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/wifi-menu,/usr/bin/mount,/usr/bin/umount,/usr/bin/pacman -Syu,/usr/bin/pacman -Syyu,/usr/bin/systemctl restart NetworkManager,/usr/bin/pacman -Syyu --noconfirm,/usr/bin/loadkeys,/usr/bin/paru,/usr/bin/pacman -Syyuw --noconfirm" >> /etc/sudoers'
