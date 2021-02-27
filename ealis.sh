@@ -106,9 +106,9 @@ manualinstall() {
 	cd /tmp || exit 1
 	sudo rm -rf /tmp/"$1"*
 	sudo curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz &&
-	sudo -u "$name" tar -xvf "$1".tar.gz >/dev/null 2>&1 &&
+	sudo tar -xvf "$1".tar.gz >/dev/null 2>&1 &&
 	cd "$1" &&
-	sudo -u "$name" makepkg --noconfirm -si >/dev/null 2>&1
+	sudo makepkg --noconfirm -si >/dev/null 2>&1
 	cd /tmp || return 1) ;}
 
 # Installation of packages for ARCH Linux repositories
@@ -129,7 +129,7 @@ aurinstall() { \
 	--title " EALIS Installation " \
 	--infobox "\\nInstalling \`$1\` ($n of $total) from the AUR $2" 6 70
 	echo "$aurinstalled" | grep -q "^$1$" && return 1
-	sudo -u "$name" $aurhelper -S --noconfirm --needed "$1" >/dev/null 2>&1
+	sudo $aurhelper -S --noconfirm --needed "$1" >/dev/null 2>&1
 	}	
 
 # Installation function for GNOME 
@@ -243,7 +243,5 @@ esac
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
 
 sudo sed -i "/%wheel/d" /etc/sudoers
-sudo bash -c 'echo "%wheel ALL=(ALL) ALL #LARBS
+sudo bash -c 'echo "%wheel ALL=(ALL) ALL #EALIS
 %wheel ALL=(ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/wifi-menu,/usr/bin/mount,/usr/bin/umount,/usr/bin/pacman -Syu,/usr/bin/pacman -Syyu,/usr/bin/systemctl restart NetworkManager,/usr/bin/pacman -Syyu --noconfirm,/usr/bin/loadkeys,/usr/bin/paru,/usr/bin/pacman -Syyuw --noconfirm" >> /etc/sudoers'
-
-
