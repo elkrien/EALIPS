@@ -25,3 +25,8 @@
 
 - modification on main script - corrections after real tests
 - modification on main script - added Laptop and Bluetooth functions
+
+### 1.0.5 - 03 Mar 2021
+
+- modification on main script - start of dotfiles function
+- modification on packages - some new packages added

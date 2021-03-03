@@ -8,17 +8,15 @@
 
 
 ## VARIABLES:
-
-#[ -z "$dotfilesrepo" ] && dotfilesrepo="https://github.com/lukesmithxyz/voidrice.git"
-[ -z "$progsfile" ] && progsfile="https://raw.githubusercontent.com/elkrien/EALIS/main/packages.csv"
-[ -z "$aurhelper" ] && aurhelper="paru"
-[ -z "$repobranch" ] && repobranch="main"
+dotfilesrepo="https://github.com/elkrien/dotfiles.git"
+progsfile="https://raw.githubusercontent.com/elkrien/EALIS/main/packages.csv"
+aurhelper="paru"
+repobranch="master"
 name=$(id -un)
 
 ### FUNCTIONS ###
 
 # Error function
-
 error() { \
 	clear 
 	tput setaf 1 
@@ -29,7 +27,6 @@ error() { \
 	}
 
 # Welcome function
-
 welcome() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -47,7 +44,6 @@ welcome() { \
 	}
 
 # Questions function
-
 questions() { \
 	DE=$(dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -72,7 +68,6 @@ questions() { \
 	}
 
 # Final Confirmation function
-
 preinstallmsg() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -84,7 +79,6 @@ preinstallmsg() { \
 	}	
 
 # Refreshing Arch Linux Keyring function
-
 refreshkeys() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -93,13 +87,11 @@ refreshkeys() { \
 	}
 
 # Installation of packages using pacman function
-
 installpkg() { 
 	sudo pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 
 	}
 
 # Installation of AUR helper function
-
 manualinstall() {
 	[ -f "/usr/bin/$1" ] || (
 	dialog \
@@ -114,7 +106,6 @@ manualinstall() {
 	cd /tmp || return 1) ;}
 
 # Installation of packages for ARCH Linux repositories function
-
 maininstall() { 
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -124,7 +115,6 @@ maininstall() {
 	}
 
 # Installation of packages from AUR repositories function
-	
 aurinstall() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -135,7 +125,6 @@ aurinstall() { \
 	}	
 
 # Installation function for GNOME 
-
 installationloopgnome() { \
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
 	let total=$(grep -c "A," /tmp/progs.csv)+$(grep -c "AG," /tmp/progs.csv)+$(grep -c "P," /tmp/progs.csv)+$(grep -c "PG," /tmp/progs.csv)
@@ -153,7 +142,6 @@ installationloopgnome() { \
 	done < /tmp/progs.csv ;}
 
 # Installation function for XFCE 
-
 installationloopxfce() { \
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
 	let total=$(grep -c "A," /tmp/progs.csv)+$(grep -c "AX," /tmp/progs.csv)+$(grep -c "P," /tmp/progs.csv)+$(grep -c "PX," /tmp/progs.csv)
@@ -171,7 +159,6 @@ installationloopxfce() { \
 	done < /tmp/progs.csv ;}
 	
 # TLP installation function
-
 tlpinstall() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -182,7 +169,6 @@ tlpinstall() { \
 	}	
 
 # Bluetooth installation function
-
 bthinstall() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -197,7 +183,6 @@ bthinstall() { \
 	}	
 
 # Enabling services function
-
 serviceinstall() {
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -219,6 +204,24 @@ serviceinstall() {
 	}
 
 
+# Copy dotfiles function
+
+gitdotfiles() { # Downloads a gitrepo $1 and places the files in $2 only overwriting conflicts # zahashować
+	dialog \
+	--backtitle "Elkrien's Arch Linux Installation Script" \
+	--title " EALIS Installation " \
+	--infobox "\\nDownloading and installing config files..." 6 60
+	[ -z "$3" ] && branch="master" || branch="$repobranch"
+	dir=$(mktemp -d)
+	[ ! -d "$2" ] && mkdir -p "$2"
+	chown "$name":wheel "$dir" "$2"
+	sudo -u "$name" git clone --recursive -b "$branch" --depth 1 --recurse-submodules "$1" "$dir" >/dev/null 2>&1
+	
+	####### - uaktualnić bo Miki jeczy i musze mu oddac kompa
+	rm -f "/home/$name/README.md" "/home/$name/LICENSE"
+	
+	sudo -u "$name" cp -rfT "$dir" "$2"
+	}
 
 ### THE ACTUAL SCRIPT ###
 
@@ -306,6 +309,12 @@ esac
 # Enable services
 
 serviceinstall
+
+# Install the dotfiles in the user's home directory - zahashować
+gitdotfiles "$dotfilesrepo" "/home/$name" "$repobranch"
+
+# make git ignore deleted LICENSE & README.md files
+#git update-index --assume-unchanged "/home/$name/README.md" "/home/$name/LICENSE" "/home/$name/FUNDING.yml"
 
 # Overwrite sudoers back and allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
