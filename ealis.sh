@@ -205,7 +205,6 @@ serviceinstall() {
 
 
 # Copy dotfiles function
-
 gitdotfiles() { # Downloads a gitrepo $1 and places the files in $2 only overwriting conflicts # zahashować
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -214,19 +213,34 @@ gitdotfiles() { # Downloads a gitrepo $1 and places the files in $2 only overwri
 	[ -z "$3" ] && branch="master" || branch="$repobranch"
 	dir=$(mktemp -d)
 	[ ! -d "$2" ] && mkdir -p "$2"
-	chown "$name":wheel "$dir" "$2"
+	sudo chown "$name":wheel "$dir" "$2"
 	sudo -u "$name" git clone --recursive -b "$branch" --depth 1 --recurse-submodules "$1" "$dir" >/dev/null 2>&1
-	
-	####### - uaktualnić bo Miki jeczy i musze mu oddac kompa
-	rm -f "/home/$name/README.md" "/home/$name/LICENSE"
-	
-	sudo -u "$name" cp -rfT "$dir" "$2"
+	rm -f -r "$dir/.git" "$dir/LICENSE" "$dir/README.md"
+    case "$DE" in
+        "GNOME") rm -f -r "$dir/.config/autostart" "$dir/.config/dconf-xfce" "$dir/.config/plank" "$dir/.config/rofi" "$dir/.config/Thunar" "$dir/.config/xfce4" 
+                rm -f -r "$dir/.local/share/xfce4-panel-profiles" "$dir/.local/share/gtksourceview-3.0" 
+                mv -f "$dir/.config/dconf-gnome" "$dir/.config/dconf"
+                ;;
+        "XFCE") rm -f -r "$dir/.config/dconf-gnome"  
+                rm -f -r "$dir/.local/share/gedit" "$dir/.local/share/gnome-shell" 
+                mv -f "$dir/.config/dconf-xfce" "$dir/.config/dconf" 
+                ;; 
+    esac
+    sudo -u "$name" cp -rfT "$dir" "$2"
 	}
+
+# Final info function
+finalize(){ \
+	dialog \
+	--backtitle "Elkrien's Arch Linux Installation Script" \
+	--title " ALL DONE ! " \
+	--msgbox "\\nCongratulations! \\n\\nProvided there were no hidden errors, the script completed successfully and all the programs and configuration files should be in place.\\n\\nTo run the new graphical environment restart computer typing 'sudo reboot'.\\n" 12 80
+	}
+
 
 ### THE ACTUAL SCRIPT ###
 
 # Allow user to run sudo without password - to not interrupt script when password is needed
-
 #[ -f /etc/sudoers.pacnew ] && cp /etc/sudoers.pacnew /etc/sudoers # Just in case
 #sudo sed -i "/%wheel/d" /etc/sudoers
 sudo bash -c 'echo "%wheel ALL=(ALL) NOPASSWD: ALL #EALIS" >> /etc/sudoers'
@@ -235,7 +249,6 @@ sudo bash -c 'echo "%wheel ALL=(ALL) NOPASSWD: ALL #EALIS" >> /etc/sudoers'
 clear
  
 # Download and install dialog to run actual script
-
 tput setaf 3
 echo
 echo "######################################################################################"
@@ -251,28 +264,22 @@ sudo pacman --noconfirm --needed -Sy dialog || error "Something is wrong - make 
 curl -o ~/.dialogrc https://raw.githubusercontent.com/elkrien/EALIS/main/dialogrc
 
 # Welcome screen
-
 welcome || error "User exited"
 
 # Asking some questions
-
 questions || error "User exited"
 
 # Final confirmation
-
 preinstallmsg || error "User exited."
 
 # Make pacman and paru colorful
-
 grep -q "^Color" /etc/pacman.conf || sed -i "s/^#Color$/Color/" /etc/pacman.conf
 grep -q "ILoveCandy" /etc/pacman.conf || sed -i "/#VerbosePkgLists/a ILoveCandy" /etc/pacman.conf
 
 # Refresh Arch keyrings and install required programs 
-
 refreshkeys || error "Error automatically refreshing Arch keyring. Consider doing so manually."
 
 # Install and configure required programs to follow next steps
-
 for x in curl base-devel git; do		# install dev tools
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -284,41 +291,36 @@ done
 #sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf # use all cores for compilation
 
 # Install AUR helper defined in variables
-
 manualinstall $aurhelper || error "Failed to install AUR helper." 
 
 # Install all packages for chosen desktop environment
-
 case "$DE" in
    "GNOME") installationloopgnome ;;
    "XFCE") installationloopxfce ;; 
 esac
 
 # Install TLP and enable TLP service if selected
-
 case "$LAPTOP" in
    "YES") tlpinstall ;; 
 esac
 
 # Install and enable Bluetooth
-
 case "$BTH" in
    "YES") bthinstall ;; 
 esac
 
 # Enable services
-
 serviceinstall
 
 # Install the dotfiles in the user's home directory - zahashować
 gitdotfiles "$dotfilesrepo" "/home/$name" "$repobranch"
 
-# make git ignore deleted LICENSE & README.md files
-#git update-index --assume-unchanged "/home/$name/README.md" "/home/$name/LICENSE" "/home/$name/FUNDING.yml"
-
 # Overwrite sudoers back and allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
-
 sudo sed -i "/#EALIS/d" /etc/sudoers
 sudo bash -c 'echo "%wheel ALL=(ALL) ALL
 %wheel ALL=(ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/wifi-menu,/usr/bin/mount,/usr/bin/umount,/usr/bin/pacman -Syu,/usr/bin/pacman -Syyu,/usr/bin/systemctl restart NetworkManager,/usr/bin/pacman -Syyu --noconfirm,/usr/bin/loadkeys,/usr/bin/paru,/usr/bin/pacman -Syyuw --noconfirm" >> /etc/sudoers'
+
+# Last message - install complete
+finalize
+clear
