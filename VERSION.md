@@ -30,3 +30,7 @@
 
 - modification on main script - start of dotfiles function
 - modification on packages - some new packages added
+
+### 1.0.6 - 03 Mar 2021
+
+- modification on main script - modification of errors

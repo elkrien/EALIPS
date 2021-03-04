@@ -100,9 +100,9 @@ manualinstall() {
 	cd /tmp || exit 1
 	sudo rm -rf /tmp/"$1"*
 	sudo curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz &&
-	sudo tar -xvf "$1".tar.gz >/dev/null 2>&1 &&
+	tar -xvf "$1".tar.gz >/dev/null 2>&1 &&
 	cd "$1" &&
-	sudo makepkg --noconfirm -si >/dev/null 2>&1
+	makepkg --noconfirm -si >/dev/null 2>&1
 	cd /tmp || return 1) ;}
 
 # Installation of packages for ARCH Linux repositories function
