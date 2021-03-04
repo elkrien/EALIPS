@@ -110,7 +110,7 @@ maininstall() {
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
 	--title " EALIS Installation " \
-	--infobox "\\nInstalling \`$1\` ($n of $total) $2" 5 70
+	--infobox "\\nInstalling \`$1\` - $2" 6 70
 	installpkg "$1"
 	}
 
@@ -119,7 +119,7 @@ aurinstall() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
 	--title " EALIS Installation " \
-	--infobox "\\nInstalling \`$1\` ($n of $total) from the AUR $2" 6 70
+	--infobox "\\nInstalling \`$1\` from the AUR - $2" 6 70
 	echo "$aurinstalled" | grep -q "^$1$" && return 1
 	$aurhelper -S --noconfirm --needed "$1" >/dev/null 2>&1
 	}	
