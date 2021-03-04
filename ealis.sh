@@ -315,11 +315,14 @@ serviceinstall
 # Install the dotfiles in the user's home directory - zahashować
 gitdotfiles "$dotfilesrepo" "/home/$name" "$repobranch"
 
+# change shell to fish
+echo /usr/local/bin/fish | sudo tee -a /etc/shells
+chsh -s /bin/fish
+
 # Overwrite sudoers back and allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
+sudo bash -c 'echo "%wheel ALL=(ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/wifi-menu,/usr/bin/mount,/usr/bin/umount,/usr/bin/pacman -Syu,/usr/bin/pacman -Syyu,/usr/bin/systemctl restart NetworkManager,/usr/bin/pacman -Syyu --noconfirm,/usr/bin/loadkeys,/usr/bin/paru,/usr/bin/pacman -Syyuw --noconfirm" >> /etc/sudoers'
 sudo sed -i "/#EALIS/d" /etc/sudoers
-sudo bash -c 'echo "%wheel ALL=(ALL) ALL
-%wheel ALL=(ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/wifi-menu,/usr/bin/mount,/usr/bin/umount,/usr/bin/pacman -Syu,/usr/bin/pacman -Syyu,/usr/bin/systemctl restart NetworkManager,/usr/bin/pacman -Syyu --noconfirm,/usr/bin/loadkeys,/usr/bin/paru,/usr/bin/pacman -Syyuw --noconfirm" >> /etc/sudoers'
 
 # Last message - install complete
 finalize
