@@ -217,8 +217,8 @@ gitdotfiles() { # Downloads a gitrepo $1 and places the files in $2 only overwri
 	sudo -u "$name" git clone --recursive -b "$branch" --depth 1 --recurse-submodules "$1" "$dir" >/dev/null 2>&1
 	rm -f -r "$dir/.git" "$dir/LICENSE" "$dir/README.md"
     case "$DE" in
-        "GNOME") rm -f -r "$dir/.config/autostart" "$dir/.config/dconf-xfce" "$dir/.config/plank" "$dir/.config/rofi" "$dir/.config/Thunar" "$dir/.config/xfce4" 
-                rm -f -r "$dir/.local/share/xfce4-panel-profiles" "$dir/.local/share/gtksourceview-3.0" 
+        "GNOME") rm -f -r "$dir/.config/autostart" "$dir/.config/dconf-xfce" "$dir/.config/plank" "$dir/.config/rofi" "$dir/.config/Thunar" "$dir/.config/xfce4" "$dir/.config/gtk-3.0" "$dir/.config/Mousepad"
+                rm -f -r "$dir/.local/share/xfce4-panel-profiles" "$dir/.local/share/gtksourceview-3.0" "$dir/.local/share/plank"
                 mv -f "$dir/.config/dconf-gnome" "$dir/.config/dconf"
                 ;;
         "XFCE") rm -f -r "$dir/.config/dconf-gnome"  

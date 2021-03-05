@@ -34,3 +34,7 @@
 ### 1.0.6 - 03 Mar 2021
 
 - modification on main script - modification of errors
+
+### 1.0.7 - 03 Mar 2021
+
+- modification on main script - actualization of dotfiles backup function
