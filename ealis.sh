@@ -219,12 +219,20 @@ gitdotfiles() { # Downloads a gitrepo $1 and places the files in $2 only overwri
     case "$DE" in
         "GNOME") rm -f -r "$dir/.config/autostart" "$dir/.config/dconf-xfce" "$dir/.config/plank" "$dir/.config/rofi" "$dir/.config/Thunar" "$dir/.config/xfce4" "$dir/.config/gtk-3.0" "$dir/.config/Mousepad"
                 rm -f -r "$dir/.local/share/xfce4-panel-profiles" "$dir/.local/share/gtksourceview-3.0" "$dir/.local/share/plank"
-                mv -f "$dir/.config/dconf-gnome" "$dir/.config/dconf"
+                rm -f -r "$dir/.dmrc"
+				mv -f "$dir/.config/dconf-gnome" "$dir/.config/dconf"
                 ;;
-        "XFCE") rm -f -r "$dir/.config/dconf-gnome"  
-                rm -f -r "$dir/.local/share/gedit" "$dir/.local/share/gnome-shell" 
-                mv -f "$dir/.config/dconf-xfce" "$dir/.config/dconf" 
-                ;; 
+        "XFCE") rm -f -r "$dir/.config/dconf-gnome"
+                rm -f -r "$dir/.local/share/gedit" "$dir/.local/share/gnome-shell"
+                mv -f "$dir/.config/dconf-xfce" "$dir/.config/dconf"
+                # setting greeter for XFCE
+				sudo mv -f /etc/lightdm/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter-old.conf
+				sudo touch /etc/lightdm/lightdm-gtk-greeter.conf
+				sudo bash -c 'echo "[greeter]
+							theme-name = Ant-Dracula
+							icon-theme-name = kora
+							background = /home/mm/backgrounds/arch.png" >> /etc/lightdm/lightdm-gtk-greeter.conf'
+				;;
     esac
     sudo -u "$name" cp -rfT "$dir" "$2"
 	}
