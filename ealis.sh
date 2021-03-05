@@ -296,12 +296,10 @@ for x in curl base-devel git; do		# install dev tools
 	installpkg "$x"
 done
 
-#sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf # use all cores for compilation
-
 # Install AUR helper defined in variables
 manualinstall $aurhelper || error "Failed to install AUR helper." 
 
-# Install all packages for chosen desktop environment
+# Install all packages for selected desktop environment
 case "$DE" in
    "GNOME") installationloopgnome ;;
    "XFCE") installationloopxfce ;; 
@@ -320,7 +318,7 @@ esac
 # Enable services
 serviceinstall
 
-# Install the dotfiles in the user's home directory - zahashować
+# Install the dotfiles in the user's home directory
 gitdotfiles "$dotfilesrepo" "/home/$name" "$repobranch"
 
 # change shell to fish
