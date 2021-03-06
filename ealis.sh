@@ -231,10 +231,11 @@ gitdotfiles() { # Downloads a gitrepo $1 and places the files in $2 only overwri
 				sudo bash -c 'echo "[greeter]
 							theme-name = Ant-Dracula
 							icon-theme-name = kora
-							background = /home/mm/backgrounds/arch.png" >> /etc/lightdm/lightdm-gtk-greeter.conf'
+							background = /usr/share/backgrounds/arch.png" >> /etc/lightdm/lightdm-gtk-greeter.conf'
 				;;
     esac
     sudo -u "$name" cp -rfT "$dir" "$2"
+	sudo cp /home/$name/.local/share/backgrounds/arch.png /usr/share/backgrounds/
 	}
 
 # Final info function
