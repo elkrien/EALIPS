@@ -3,9 +3,9 @@
 
 ...work in progress...
 
-EALIS is a shell script that will install fully configured desktop environement (XFCE or GNOME) - by default EALIS will install my list of selected applications and dotfiles:
+EALIS is a shell script that will install fully configured desktop environement (XFCE or GNOME) - by default script will install my personal list of selected applications and dotfiles:
 - packages are listed in file `packages.csv` - see instruction below
-- dotfiles are downloaded from my personal GitHub
+- dotfiles are downloaded from my dotfiles GitHub
 
 EALIS was created as a modification for my own purpose of LARBS (by Luke Smith) - I was looking for something that will automate my Arch Linux post-installation and found this amazing project that I decided to adopt and modify. 
 

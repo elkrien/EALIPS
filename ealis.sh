@@ -324,7 +324,7 @@ gitdotfiles "$dotfilesrepo" "/home/$name" "$repobranch"
 
 # change shell to fish
 echo /usr/local/bin/fish | sudo tee -a /etc/shells
-chsh -s /bin/fish
+sudo chsh -s /bin/fish
 
 # Overwrite sudoers back and allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
