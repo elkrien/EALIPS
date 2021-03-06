@@ -281,10 +281,6 @@ questions || error "User exited"
 # Final confirmation
 preinstallmsg || error "User exited."
 
-# Make pacman and paru colorful
-grep -q "^Color" /etc/pacman.conf || sed -i "s/^#Color$/Color/" /etc/pacman.conf
-grep -q "ILoveCandy" /etc/pacman.conf || sed -i "/#VerbosePkgLists/a ILoveCandy" /etc/pacman.conf
-
 # Refresh Arch keyrings and install required programs 
 refreshkeys || error "Error automatically refreshing Arch keyring. Consider doing so manually."
 
@@ -321,6 +317,10 @@ serviceinstall
 
 # Install the dotfiles in the user's home directory
 gitdotfiles "$dotfilesrepo" "/home/$name" "$repobranch"
+
+# Make pacman and paru colorful
+grep -q "^Color" /etc/pacman.conf || sudo sed -i "s/^#Color$/Color/" /etc/pacman.conf
+grep -q "ILoveCandy" /etc/pacman.conf || sudo sed -i "/#VerbosePkgLists/a ILoveCandy" /etc/pacman.conf
 
 # change shell to fish
 echo /usr/local/bin/fish | sudo tee -a /etc/shells

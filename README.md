@@ -11,12 +11,12 @@ EALIS was created as a modification for my own purpose of LARBS (by Luke Smith) 
 
 After the installation a nice looking desktop based on Dracula Theme will be waiting for You - see example screenshots here.
 
-**Requirements:**
+### **Requirements:**
 - fresh install of Arch Linux
 - internet connection
 - `curl` installed (`sudo pacman -S curl` if needed)
 
-**Installation:**
+### **Installation:**
 
 1. Start fresh installed Arch Linux
 2. Login asd created during installation user
