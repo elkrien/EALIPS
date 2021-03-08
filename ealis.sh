@@ -229,9 +229,12 @@ gitdotfiles() { # Downloads a gitrepo $1 and places the files in $2 only overwri
 				sudo mv -f /etc/lightdm/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter-old.conf
 				sudo touch /etc/lightdm/lightdm-gtk-greeter.conf
 				sudo bash -c 'echo "[greeter]
-							theme-name = Ant-Dracula
-							icon-theme-name = kora
-							background = /usr/share/backgrounds/arch.png" >> /etc/lightdm/lightdm-gtk-greeter.conf'
+				theme-name = Ant-Dracula
+				icon-theme-name = kora
+				background = /usr/share/backgrounds/arch.png" >> /etc/lightdm/lightdm-gtk-greeter.conf'
+				sudo rm -f -r /usr/share/xsessions/budgie-desktop.desktop
+				sudo rm -f -r /usr/share/xsessions/gnome.desktop
+				sudo rm -f -r /usr/share/xsessions/gnome-xorg.desktop
 				;;
     esac
     sudo -u "$name" cp -rfT "$dir" "$2"
