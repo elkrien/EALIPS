@@ -232,9 +232,10 @@ gitdotfiles() { # Downloads a gitrepo $1 and places the files in $2 only overwri
 				theme-name = Ant-Dracula
 				icon-theme-name = kora
 				background = /usr/share/backgrounds/arch.png" >> /etc/lightdm/lightdm-gtk-greeter.conf'
-				sudo rm -f -r /usr/share/xsessions/budgie-desktop.desktop
-				sudo rm -f -r /usr/share/xsessions/gnome.desktop
-				sudo rm -f -r /usr/share/xsessions/gnome-xorg.desktop
+				sudo rm -f /usr/share/xsessions/budgie-desktop.desktop
+				sudo rm -f /usr/share/xsessions/gnome.desktop
+				sudo rm -f /usr/share/xsessions/gnome-xorg.desktop
+				sudo sed -i "/#user-session=default/a user-session=xfce" /etc/lightdm/lightdm.conf
 				;;
     esac
     sudo -u "$name" cp -rfT "$dir" "$2"
