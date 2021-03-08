@@ -328,7 +328,7 @@ grep -q "ILoveCandy" /etc/pacman.conf || sudo sed -i "/#VerbosePkgLists/a ILoveC
 
 # change shell to fish
 echo /usr/local/bin/fish | sudo tee -a /etc/shells
-sudo chsh -s /bin/fish
+sudo -u "$name" chsh -s /bin/fish
 
 # Overwrite sudoers back and allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
