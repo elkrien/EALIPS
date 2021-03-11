@@ -110,3 +110,4 @@ AX,vala-panel-appmenu-common-git,"translations and common files for Global Menu	
 AX,vala-panel-appmenu-registrar-git,"small utility to hold DBusMenu menus (XFCE)"
 P,lolcat,"a command line tool to output rainbow of colors in Terminal"
 P,signal-desktop,"Signal Private Messenger for Linux"
+P,fd,"a simple, fast and user-friendly alternative to find"
