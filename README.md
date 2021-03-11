@@ -14,12 +14,12 @@ After the installation a nice looking desktop based on Dracula Theme will be wai
 ### **Requirements:**
 - fresh install of Arch Linux
 - internet connection
-- `curl` installed (`sudo pacman -S curl` if needed)
+- `curl` installed (run `sudo pacman -S curl` if needed)
 
 ### **Installation:**
 
 1. Start fresh installed Arch Linux
-2. Login asd created during installation user
+2. Login as created during installation user
 3. Run the following commands:
 ```sh
    curl -Lo ealis.sh bit.ly/ealis
