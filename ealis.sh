@@ -7,7 +7,7 @@
 #
 
 
-## VARIABLES:
+### VARIABLES ###
 dotfilesrepo="https://github.com/elkrien/dotfiles.git"
 progsfile="https://raw.githubusercontent.com/elkrien/EALIS/main/packages.csv"
 aurhelper="paru"
@@ -16,7 +16,7 @@ name=$(id -un)
 
 ### FUNCTIONS ###
 
-# Error function
+## Error
 error() { \
 	clear 
 	tput setaf 1 
@@ -26,7 +26,7 @@ error() { \
 	exit 1
 	}
 
-# Welcome function
+## Welcome
 welcome() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -43,7 +43,7 @@ welcome() { \
 	10 70
 	}
 
-# Questions function
+## Questions
 questions() { \
 	DE=$(dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -67,7 +67,7 @@ questions() { \
 	--yesno "\\nDo You want to install Bluetooth service?" 7 55); then BTH=YES; else BTH=NO; fi 
 	}
 
-# Final Confirmation function
+## Final Confirmation
 preinstallmsg() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -78,7 +78,7 @@ preinstallmsg() { \
 	14 60 || { clear; exit 1; }
 	}	
 
-# Refreshing Arch Linux Keyring function
+## Refreshing Arch Linux Keyring
 refreshkeys() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -86,12 +86,12 @@ refreshkeys() { \
 	sudo pacman --noconfirm -S archlinux-keyring >/dev/null 2>&1
 	}
 
-# Installation of packages using pacman function
+## Installation of packages using pacman
 installpkg() { 
 	sudo pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 
 	}
 
-# Installation of AUR helper function
+## Installation of AUR helper
 manualinstall() {
 	[ -f "/usr/bin/$1" ] || (
 	dialog \
@@ -105,7 +105,7 @@ manualinstall() {
 	makepkg --noconfirm -si >/dev/null 2>&1
 	cd /tmp || return 1) ;}
 
-# Installation of packages for ARCH Linux repositories function
+## Installation of packages from ARCH Linux repositories
 maininstall() { 
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -114,7 +114,7 @@ maininstall() {
 	installpkg "$1"
 	}
 
-# Installation of packages from AUR repositories function
+## Installation of packages from AUR repositories
 aurinstall() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -124,7 +124,7 @@ aurinstall() { \
 	$aurhelper -S --noconfirm --needed "$1" >/dev/null 2>&1
 	}	
 
-# Installation function for GNOME 
+## Installation function for GNOME 
 installationloopgnome() { \
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
 	let total=$(grep -c "A," /tmp/progs.csv)+$(grep -c "AG," /tmp/progs.csv)+$(grep -c "P," /tmp/progs.csv)+$(grep -c "PG," /tmp/progs.csv)
@@ -141,7 +141,7 @@ installationloopgnome() { \
 		esac
 	done < /tmp/progs.csv ;}
 
-# Installation function for XFCE 
+## Installation function for XFCE 
 installationloopxfce() { \
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
 	let total=$(grep -c "A," /tmp/progs.csv)+$(grep -c "AX," /tmp/progs.csv)+$(grep -c "P," /tmp/progs.csv)+$(grep -c "PX," /tmp/progs.csv)
@@ -158,7 +158,7 @@ installationloopxfce() { \
 		esac
 	done < /tmp/progs.csv ;}
 	
-# TLP installation function
+## TLP installation
 tlpinstall() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -168,7 +168,7 @@ tlpinstall() { \
 	sudo systemctl enable tlp.service
 	}	
 
-# Bluetooth installation function
+## Bluetooth installation
 bthinstall() { \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -182,7 +182,7 @@ bthinstall() { \
 	sudo sed -i 's/'#AutoEnable=false'/'AutoEnable=true'/g' /etc/bluetooth/main.conf
 	}	
 
-# Enabling services function
+## Enabling services
 serviceinstall() {
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -203,8 +203,7 @@ serviceinstall() {
 	sudo systemctl enable avahi-daemon.service
 	}
 
-
-# Copy dotfiles function
+## Copy dotfiles
 gitdotfiles() { # Downloads a gitrepo $1 and places the files in $2 only overwriting conflicts # zahashować
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -242,7 +241,7 @@ gitdotfiles() { # Downloads a gitrepo $1 and places the files in $2 only overwri
 	sudo cp /home/$name/.local/share/backgrounds/arch.png /usr/share/backgrounds/
 	}
 
-# Final info function
+## Final information box
 finalize(){ \
 	dialog \
 	--backtitle "Elkrien's Arch Linux Installation Script" \
@@ -254,8 +253,6 @@ finalize(){ \
 ### THE ACTUAL SCRIPT ###
 
 # Allow user to run sudo without password - to not interrupt script when password is needed
-#[ -f /etc/sudoers.pacnew ] && cp /etc/sudoers.pacnew /etc/sudoers # Just in case
-#sudo sed -i "/%wheel/d" /etc/sudoers
 sudo bash -c 'echo "%wheel ALL=(ALL) NOPASSWD: ALL #EALIS" >> /etc/sudoers'
 
 # Clear terminal
@@ -311,7 +308,7 @@ case "$LAPTOP" in
    "YES") tlpinstall ;; 
 esac
 
-# Install and enable Bluetooth
+# Install and enable Bluetooth if selected
 case "$BTH" in
    "YES") bthinstall ;; 
 esac
