@@ -202,6 +202,11 @@ serviceinstall() {
 	# disable systemd-resolved (not working with avahi) and enable avahi:
 	sudo systemctl disable systemd-resolved.service 
 	sudo systemctl enable avahi-daemon.service
+	# fstrim (sdd)
+	sudo systemctl enable fstrim.timer
+	# set swappiness
+	sudo touch /etc/sysctl.d/99-swappiness.conf
+	sudo bash -c 'echo "vm.swappiness=10" >> /etc/sudoers'
 	}
 
 ## Copy dotfiles
