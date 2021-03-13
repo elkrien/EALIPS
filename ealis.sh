@@ -207,6 +207,9 @@ serviceinstall() {
 	# set swappiness
 	sudo touch /etc/sysctl.d/99-swappiness.conf
 	sudo bash -c 'echo "vm.swappiness=10" >> /etc/sudoers'
+	# reflector (change "Poland,Germany" if You want different countries)
+	sudo sed -i 's/^# --country France,Germany/--country Poland,Germany/' /etc/xdg/reflector/reflector.conf
+	sudo systemctl enable reflector.timer
 	}
 
 ## Copy dotfiles
