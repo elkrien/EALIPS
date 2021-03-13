@@ -10,7 +10,7 @@
 ### VARIABLES ###
 dotfilesrepo="https://github.com/elkrien/dotfiles.git"
 progsfile="https://raw.githubusercontent.com/elkrien/EALIS/main/packages.csv"
-aurhelper="paru"
+aurhelper="paru-bin"
 repobranch="master"
 name=$(id -un)
 
