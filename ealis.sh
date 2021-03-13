@@ -10,7 +10,8 @@
 ### VARIABLES ###
 dotfilesrepo="https://github.com/elkrien/dotfiles.git"
 progsfile="https://raw.githubusercontent.com/elkrien/EALIS/main/packages.csv"
-aurhelper="paru-bin"
+aurhelper="paru"
+aurhelperinstall="paru-bin"
 repobranch="master"
 name=$(id -un)
 
@@ -124,7 +125,7 @@ aurinstall() { \
 	$aurhelper -S --noconfirm --needed "$1" >/dev/null 2>&1
 	}	
 
-## Installation function for GNOME 
+## Installation function for GNOME
 installationloopgnome() { \
 	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
 	let total=$(grep -c "A," /tmp/progs.csv)+$(grep -c "AG," /tmp/progs.csv)+$(grep -c "P," /tmp/progs.csv)+$(grep -c "PG," /tmp/progs.csv)
@@ -295,7 +296,8 @@ for x in curl base-devel git; do		# install dev tools
 done
 
 # Install AUR helper defined in variables
-manualinstall $aurhelper || error "Failed to install AUR helper." 
+
+manualinstall $aurhelperinstall || error "Failed to install AUR helper." 
 
 # Install all packages for selected desktop environment
 case "$DE" in
