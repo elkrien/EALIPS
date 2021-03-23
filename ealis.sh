@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #
 # Elkrien's Arch Linux Installation Script (EALIS)
 # by MM <elkrien@gmail.com>

@@ -1,8 +1,6 @@
 # **E**lkrien's **A**rch **L**inux **I**nstallation **S**cript
 
 
-...work in progress...
-
 EALIS is a shell script that will install fully configured desktop environement (XFCE or GNOME) - by default script will install my personal list of selected applications and dotfiles:
 - packages are listed in file `packages.csv` - see instruction below
 - dotfiles are downloaded from my dotfiles GitHub
